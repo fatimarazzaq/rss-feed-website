@@ -1,0 +1,18 @@
+.navbar {
+    background-color: rgb(135, 49, 255) !important;
+}
+
+.navbar a {
+
+    color: white !important;
+}
+
+.btn-custom {
+    background-color: #8731FF;
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: #8936fc;
+    color: white;
+}

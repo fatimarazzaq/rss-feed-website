@@ -1,0 +1,138 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    #btn-back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+    }
+
+
+    .post>img {
+        width: 200px;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .post>div>h3 {
+        color: black;
+    }
+
+    @media screen and (max-width: 767px) {
+        .post {
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+        }
+
+        .post>img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .post>div {
+            padding: 10px 12px;
+        }
+
+
+    }
+</style>
+
+<div class="container my-4">
+    <h1 class="text-center">RSS Feed</h1>
+    <div class="row py-3">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" required class="form-control" placeholder="RSS Link..." aria-label=""
+                        name="rss-link" value="{{rss_link}}">
+                    <button class="btn btn-custom" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="container">
+    {% if feeds %}
+    <div class="row d-flex justify-content-center">
+        <!-- Post 1 -->
+        {% for feed in feeds %}
+        <div class="col-md-2 col-xs-0"></div>
+        <div class="col-md-8 col-xs-12 mb-3">
+            <div class="post d-flex align-items-center">
+                <img src="{% static 'feed/images/img.jpg' %}" alt="Post Image 1">
+                <div class="px-3">
+                    <h3 style="line-height: 1.1;font-size: 1.3em;"><a href="{{feed.link}}" class="text-dark"
+                            style="text-decoration: none;" target="_blank">{{feed.title}}</a></h3>
+                    <p>{{feed.description|safe}}...</p>
+                    <a href="{{feed.link}}" target="_blank">Read more...</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-xs-0"></div>
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+    <h3 class="text-center">No Feed to show</h3>
+    {% endif %}
+
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-sm btn-custom btn-floating" id="btn-back-to-top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z" />
+        </svg>
+    </button>
+</div>
+
+
+
+<script>
+    //Get the button
+    let mybutton = document.getElementById("btn-back-to-top");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        if (
+            document.body.scrollTop > 20 ||
+            document.documentElement.scrollTop > 20
+        ) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+    // When the user clicks on the button, scroll to the top of the document
+    mybutton.addEventListener("click", backToTop);
+
+    function backToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+
+
+
+{% endblock content %}
